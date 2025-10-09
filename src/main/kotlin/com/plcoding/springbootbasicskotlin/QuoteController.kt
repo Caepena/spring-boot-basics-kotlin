@@ -1,7 +1,6 @@
 package com.plcoding.springbootbasicskotlin
 
 import com.plcoding.springbootbasicskotlin.service.QuotesService
-import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -11,22 +10,15 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.client.RestTemplate
 
-@Component
-class Test {
-    init {
-        println("hello world!")
-    }
-}
 
 @RestController
 @RequestMapping("/quotes")
 class QuoteController(
     private val quotesService: QuotesService,
-    private val test: Test
+    private val restTemplate: RestTemplate
 ) {
-
-    val quotes = mutableListOf<QuoteDto>()
 
     @GetMapping
     fun loadQuotes(
