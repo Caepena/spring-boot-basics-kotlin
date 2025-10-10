@@ -1,6 +1,7 @@
 package com.plcoding.springbootbasicskotlin
 
 import com.plcoding.springbootbasicskotlin.service.QuotesService
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -28,12 +29,12 @@ class QuoteController(
     }
 
     @PostMapping
-    fun postQuote(@RequestBody quoteDto: QuoteDto): QuoteDto {
+    fun postQuote(@Valid @RequestBody quoteDto: QuoteDto): QuoteDto {
         return quotesService.insertQuote(quoteDto)
     }
 
     @PutMapping
-    fun putQuote(@RequestBody quoteDto: QuoteDto): QuoteDto {
+    fun putQuote(@Valid @RequestBody quoteDto: QuoteDto): QuoteDto {
         return quotesService.updateQuote(quoteDto)
     }
 
