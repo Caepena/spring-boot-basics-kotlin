@@ -9,7 +9,7 @@ data class QuotesConfig(
 ) {
     data class SearchConfig(
         val ignoreCase: Boolean = true,
-        val minLenght: Int = 3,
+        val minLength: Int = 3,
     )
 
     data class ValidationConfig(

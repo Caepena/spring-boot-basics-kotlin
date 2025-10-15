@@ -1,33 +1,15 @@
 package com.plcoding.springbootbasicskotlin.repository
 
 import com.plcoding.springbootbasicskotlin.QuoteDto
-import org.springframework.stereotype.Repository
+import com.plcoding.springbootbasicskotlin.QuoteEntity
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
 
-@Repository
-class QuotesRepository {
+interface QuotesRepository: JpaRepository<QuoteEntity, Long> {
+    fun findByContentContainsIgnoreCase(query: String): List<QuoteEntity>
 
-    private val quotes = mutableListOf<QuoteDto>()
-
-    fun getQuotes() = quotes
-
-    fun insertQuote(quote: QuoteDto): QuoteDto {
-        quotes.add(quote)
-        return quote
-    }
-
-    fun updateQuote(quote: QuoteDto): QuoteDto {
-        val index = quotes.indexOfFirst { it.id == quote.id }
-        quotes[index] = quote
-        return quote
-    }
-
-    fun deleteQuotes(quoteId: Long): Boolean {
-        val quoteToDelete = quotes.find { it.id == quoteId }
-        return if (quoteToDelete != null) {
-            quotes.remove(quoteToDelete)
-            true
-        } else {
-            false
-        }
-    }
+    @Query("""
+        SELECT q FROM QuoteEntity q WHERE q.content LIKE '%' || :query || '%'
+    """)
+    fun searchQuote(query: String): List<QuoteEntity>
 }

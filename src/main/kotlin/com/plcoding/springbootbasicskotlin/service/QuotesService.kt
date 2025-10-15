@@ -18,19 +18,23 @@ class QuotesService(
         println(quotesConfig)
     }
 
-    fun getQuotes() = quotesRepository.getQuotes()
+    fun getQuotes(query: String?): List<QuoteDto> {
+        return if(query != null) {
+            quotesRepository.findByContentContainsIgnoreCase(query).map { it.toDto() }
+        } else {
+            quotesRepository.findAll().map { it.toDto() }
+        }
+    }
 
     fun insertQuote(quote: QuoteDto): QuoteDto {
-        return quotesRepository.insertQuote(quote)
+        return quotesRepository.save(quote.toEntity().apply { this.id = 0 }).toDto()
     }
 
     fun updateQuote(quote: QuoteDto): QuoteDto {
-        return quotesRepository.updateQuote(quote)
+        return quotesRepository.save(quote.toEntity()).toDto()
     }
 
     fun deleteQuotes(quoteId: Long) {
-        if (!quotesRepository.deleteQuotes(quoteId)) {
-            throw QuoteNotFoundException(quoteId)
-        }
+        quotesRepository.deleteById(quoteId)
     }
 }
